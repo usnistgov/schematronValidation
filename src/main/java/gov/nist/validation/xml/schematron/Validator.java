@@ -40,6 +40,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import gov.nist.validation.xml.schematron.Result.Severity;
+
 /**
  * @author andrew.mccaffrey
  */
@@ -88,10 +90,29 @@ public class Validator {
         }
 
         return results;
-
     }
 
-    protected static Result issueToResult(Element issue, Result.Severity severity) {
+    
+    private static Collection<Result> toResults(String resultsString, Severity  severity) throws SAXException, ParserConfigurationException, IOException{
+    	 Collection<Result> results = new ArrayList<>();
+
+         Document resultNode = (Document) Validator.stringToDom(resultsString);
+
+         // TODO
+         NodeList resultList = resultNode.getElementsByTagName("Results");
+         Element resultElement = (Element) resultList.item(0);
+         NodeList issues = resultElement.getElementsByTagName("issue");
+
+         for (int i = 0; i < issues.getLength(); i++) {
+             Result resultA = Validator.issueToResult((Element) issues.item(i), severity);
+             results.add(resultA);
+         }
+
+         return results;
+
+    }
+    
+    public static Result issueToResult(Element issue, Result.Severity severity) {
 
         Result result = new Result();
         result.setSeverity(severity);
@@ -156,6 +177,13 @@ public class Validator {
         result.append(Validator.doTransform(xml, schematronTransform));
         return result.toString();
     }
+    
+    public static Collection<Result> validateWithSchematron(String xml, String schematronLocation, String phase, Severity severity ) throws SAXException, IOException, ParserConfigurationException {
+         String  resultsString = validateWithSchematron( createDocument(xml), schematronLocation, phase);
+        Collection<Result> results = toResults(resultsString,severity);
+		return results;
+    }
+
 
     public static Node doTransform(File originalXml, InputStream transform, String phase) {
 
