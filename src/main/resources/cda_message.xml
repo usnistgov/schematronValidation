@@ -56,7 +56,9 @@
     <title>Coded Cause of Death Document</title>
 
     <effectiveTime value="20161107094421-0500" />
+    
     <confidentialityCode code="N" codeSystem="2.16.840.1.11.3883.5.25" codeSystemName="Confidentiality" displayName="Normal" />
+    
     <languageCode code="en-us" />
     <recordTarget>
         <patientRole>

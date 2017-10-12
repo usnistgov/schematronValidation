@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -35,12 +36,22 @@ public class SchematronValidatorTest {
 
         System.out.println(errorResults.size() + " = length");
         System.out.println(warningResults.size() + " = length");
-
-        Result firstError = errorResults.iterator().next();
-        System.out.println("Severity: " + firstError.getSeverity());
-        System.out.println("Message: " + firstError.getMessage());
-        System.out.println("Context (XPATH): " + firstError.getContext());
-        System.out.println("Test (XPATH): " + firstError.getTest());
+        Iterator it2 = errorResults.iterator();
+        while(it2.hasNext()) {
+            Result firstError = (Result) it2.next();
+            System.out.println("Severity: " + firstError.getSeverity());
+            System.out.println("Message: " + firstError.getMessage());
+            System.out.println("Context (XPATH): " + firstError.getContext());
+            System.out.println("Test (XPATH): " + firstError.getTest());
+        }
+        Iterator it = warningResults.iterator();
+        while(it.hasNext()) {
+            Result firstWarning = (Result) it.next();
+            System.out.println("Severity: " + firstWarning.getSeverity());
+            System.out.println("Message: " + firstWarning.getMessage());
+            System.out.println("Context (XPATH): " + firstWarning.getContext());
+            System.out.println("Test (XPATH): " + firstWarning.getTest());
+        }
     }
 
     private String getXMLFileFromResources(String filepath) throws java.io.IOException {
