@@ -142,7 +142,8 @@ public class Validator {
     public static String validateWithSchematron(Document xml, String schematronLocation, String phase) {
 
         StringBuilder result = new StringBuilder();
-        File schematron = new File(Validator.class.getClassLoader().getResource(schematronLocation).getFile());
+
+        File schematron = new File(schematronLocation);
         //File schematron = new File(schematronLocation);
         InputStream skeleton = Validator.class.getClassLoader().getResourceAsStream("./schematron-Validator-report.xsl");
 
