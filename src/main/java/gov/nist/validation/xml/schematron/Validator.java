@@ -142,8 +142,9 @@ public class Validator {
     public static String validateWithSchematron(Document xml, String schematronLocation, String phase) {
 
         StringBuilder result = new StringBuilder();
+
         File schematron = new File(schematronLocation);
-        // File skeleton = new File(skeletonLocation);
+        //File schematron = new File(schematronLocation);
         InputStream skeleton = Validator.class.getClassLoader().getResourceAsStream("./schematron-Validator-report.xsl");
 
         Node schematronTransform = Validator.doTransform(schematron, skeleton, phase);
@@ -159,8 +160,10 @@ public class Validator {
             Source xmlSource = new StreamSource(originalXml);
             //Source xsltSource = new StreamSource(transform);
             Source xsltSource = new StreamSource(transform);
-
-            Transformer transformer = TransformerFactory.newInstance().newTransformer(xsltSource);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setURIResolver(new ClasspathUriResolver());
+            Templates templatesXslt = transformerFactory.newTemplates(xsltSource);
+            Transformer transformer = templatesXslt.newTransformer();
             transformer.setParameter("phase", phase);
             transformer.transform(xmlSource, result);
         } catch (TransformerConfigurationException tce) {
@@ -186,6 +189,7 @@ public class Validator {
             Source xsltSource = new DOMSource(transform);
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer(xsltSource);
+            transformer.setURIResolver(new ClasspathUriResolver());
             transformer.transform(xmlSource, result);
         } catch (TransformerConfigurationException tce) {
             tce.printStackTrace();
@@ -220,29 +224,6 @@ public class Validator {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException {
-/*
-        String xml = "<ClinicalDocument xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\"\n"
-                + "    xmlns:sdtc=\"urn:hl7-org:sdtc\" xsi:schemaLocation=\"urn:hl7-org:v3 ../../schema/infrastructure/cda/CDA_SDTC.xsd\">\n"
-                + "    <realmCode code=\"US\" /></ClinicalDocument>";
-*/
-
-       // String xml = new String(Files.readAllBytes(Paths.get("/home/mccaffrey/specs/cdc/nhcs/XML/samples/CDAR2_IG_NHCS_R1_DSTU1.2_2016JUL_OPE.xml")), StandardCharsets.UTF_8);
- String xml = new String(Files.readAllBytes(Paths.get("/home/mccaffrey/Downloads/cda_message.xml")), StandardCharsets.UTF_8);
-
-        Collection<Result> errorResults = Validator.runValidation(xml, Result.Severity.ERRORS, "/home/mccaffrey/src/schematronValidation/./schematron/nhcs/CDAR2_IG_NHCS_R1_DSTU1.2_2016JUL.sch");
-        Collection<Result> warningResults = Validator.runValidation(xml, Result.Severity.WARNINGS, "/home/mccaffrey/src/schematronValidation/./schematron/nhcs/CDAR2_IG_NHCS_R1_DSTU1.2_2016JUL.sch");
-
-        System.out.println(errorResults.size() + " = length");
-        System.out.println(warningResults.size() + " = length");
-
-        Result firstError = errorResults.iterator().next();
-        System.out.println("Severity: " + firstError.getSeverity());
-        System.out.println("Message: " + firstError.getMessage());
-        System.out.println("Context (XPATH): " + firstError.getContext());
-        System.out.println("Test (XPATH): " + firstError.getTest());
     }
 
 }
