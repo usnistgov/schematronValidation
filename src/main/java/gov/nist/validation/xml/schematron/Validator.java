@@ -45,6 +45,15 @@ import org.xml.sax.SAXException;
  */
 public class Validator {
 
+    public static Collection<Result> runValidation(String xmlInput, String schematronPathname) throws SAXException, ParserConfigurationException, IOException {
+        Collection<Result> results = new ArrayList<>();
+        results.addAll(Validator.runValidation(xmlInput, Result.Severity.ERRORS, schematronPathname));
+        results.addAll(Validator.runValidation(xmlInput, Result.Severity.WARNINGS, schematronPathname));
+        results.addAll(Validator.runValidation(xmlInput, Result.Severity.REPORT, schematronPathname));
+        
+        return results;
+    }
+    
     public static Collection<Result> runValidation(String xmlInput, Result.Severity severity, String schematronPathname) throws SAXException, ParserConfigurationException, IOException {
 
         Document doc = Validator.createDocument(xmlInput); //Validator.validateWithSchema(file, errorHandler, schemaLocation);
@@ -67,7 +76,7 @@ public class Validator {
         Collection<Result> results = new ArrayList<>();
 
         Document resultNode = (Document) Validator.stringToDom(resultsString);
-
+        
         // TODO
         NodeList resultList = resultNode.getElementsByTagName("Results");
         Element resultElement = (Element) resultList.item(0);

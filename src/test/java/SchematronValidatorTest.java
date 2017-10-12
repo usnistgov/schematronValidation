@@ -34,6 +34,8 @@ public class SchematronValidatorTest {
             "src/test/resources/CDAR2_IG_EHR2VRDRPT_R1_D2_2017JAN.sch");
         Collection<Result> warningResults = Validator.runValidation(xml, Result.Severity.WARNINGS, "src/test/resources/CDAR2_IG_EHR2VRDRPT_R1_D2_2017JAN.sch");
 
+        Collection<Result> allResults = Validator.runValidation(xml, "src/test/resources/CDAR2_IG_EHR2VRDRPT_R1_D2_2017JAN.sch");
+        
         System.out.println(errorResults.size() + " = length");
         System.out.println(warningResults.size() + " = length");
         Iterator it2 = errorResults.iterator();
@@ -52,6 +54,21 @@ public class SchematronValidatorTest {
             System.out.println("Context (XPATH): " + firstWarning.getContext());
             System.out.println("Test (XPATH): " + firstWarning.getTest());
         }
+        
+        System.out.println(allResults.size() + " = length");
+        
+        Iterator it3 = allResults.iterator();
+        while(it3.hasNext()) {
+            Result firstAll = (Result) it3.next();
+            System.out.println("Severity: " + firstAll.getSeverity());
+            System.out.println("Message: " + firstAll.getMessage());
+            System.out.println("Context (XPATH): " + firstAll.getContext());
+            System.out.println("Test (XPATH): " + firstAll.getTest());
+        }
+        
+        
+        
+        
     }
 
     private String getXMLFileFromResources(String filepath) throws java.io.IOException {
