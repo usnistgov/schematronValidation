@@ -140,13 +140,9 @@ public class Validator {
     // generating it on every run.  That is left as an exercise for the
     // implementor.
     public static String validateWithSchematron(Document xml, String schematronLocation, String phase) {
-
         StringBuilder result = new StringBuilder();
-
         File schematron = new File(schematronLocation);
-        //File schematron = new File(schematronLocation);
         InputStream skeleton = Validator.class.getClassLoader().getResourceAsStream("./schematron-Validator-report.xsl");
-
         Node schematronTransform = Validator.doTransform(schematron, skeleton, phase);
         result.append(Validator.doTransform(xml, schematronTransform));
         return result.toString();

@@ -30,8 +30,8 @@ public class SchematronValidatorTest {
         String xml = getXMLFileFromResources("cda_message.xml");
 
         Collection<Result> errorResults = Validator.runValidation(xml, Result.Severity.ERRORS,
-            "CDAR2_IG_EHR2VRDRPT_R1_D2_2017JAN.sch");
-        Collection<Result> warningResults = Validator.runValidation(xml, Result.Severity.WARNINGS, "CDAR2_IG_EHR2VRDRPT_R1_D2_2017JAN.sch");
+            "src/test/resources/CDAR2_IG_EHR2VRDRPT_R1_D2_2017JAN.sch");
+        Collection<Result> warningResults = Validator.runValidation(xml, Result.Severity.WARNINGS, "src/test/resources/CDAR2_IG_EHR2VRDRPT_R1_D2_2017JAN.sch");
 
         System.out.println(errorResults.size() + " = length");
         System.out.println(warningResults.size() + " = length");
