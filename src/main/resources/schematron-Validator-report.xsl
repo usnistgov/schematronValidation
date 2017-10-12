@@ -40,8 +40,11 @@
 	xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias" 
 	xmlns:sch="http://www.ascc.net/xml/schematron">
     
-   <xsl:import href="/skeleton1-5.xsl"/>
+   <xsl:import href="/skeleton1-5.xsl"/>   
+   
   <!--
+  <xsl:import href=""/>
+   <xsl:import href="file:///home/mccaffrey/src/schematronValidation/src/main/resources/skeleton1-5.xsl"/>
    <xsl:import href="skeleton1-5.xsl"/>   
    -->
    
