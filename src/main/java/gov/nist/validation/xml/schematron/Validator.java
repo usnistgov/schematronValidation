@@ -172,14 +172,22 @@ public class Validator {
     public static String validateWithSchematron(Document xml, String schematronLocation, String phase) {
         StringBuilder result = new StringBuilder();
         File schematron = new File(schematronLocation);
-        InputStream skeleton = Validator.class.getClassLoader().getResourceAsStream("./schematron-Validator-report.xsl");
+        InputStream skeleton = Validator.class.getResourceAsStream("/schematron-Validator-report.xsl");
+        Node schematronTransform = Validator.doTransform(schematron, skeleton, phase);
+        result.append(Validator.doTransform(xml, schematronTransform));
+        return result.toString();
+    } 
+    
+    public static String validateWithSchematron(Document xml, InputStream schematron, String phase) {
+        StringBuilder result = new StringBuilder();
+         InputStream skeleton = Validator.class.getResourceAsStream("/schematron-Validator-report.xsl");
         Node schematronTransform = Validator.doTransform(schematron, skeleton, phase);
         result.append(Validator.doTransform(xml, schematronTransform));
         return result.toString();
     }
     
-    public static Collection<Result> validateWithSchematron(String xml, String schematronLocation, String phase, Severity severity ) throws SAXException, IOException, ParserConfigurationException {
-         String  resultsString = validateWithSchematron( createDocument(xml), schematronLocation, phase);
+    public static Collection<Result> validateWithSchematron(String xml, InputStream schematron, String phase, Severity severity ) throws SAXException, IOException, ParserConfigurationException {
+         String  resultsString = validateWithSchematron( createDocument(xml), schematron, phase);
         Collection<Result> results = toResults(resultsString,severity);
 		return results;
     }
@@ -210,6 +218,33 @@ public class Validator {
         }
         return result.getNode();
     }
+    
+    public static Node doTransform(InputStream originalXml, InputStream transform, String phase) {
+
+        System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+        DOMResult result = new DOMResult();
+        try {
+            Source xmlSource = new StreamSource(originalXml);
+            //Source xsltSource = new StreamSource(transform);
+            Source xsltSource = new StreamSource(transform);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setURIResolver(new ClasspathUriResolver());
+            Templates templatesXslt = transformerFactory.newTemplates(xsltSource);
+            Transformer transformer = templatesXslt.newTransformer();
+            transformer.setParameter("phase", phase);
+            transformer.transform(xmlSource, result);
+        } catch (TransformerConfigurationException tce) {
+            tce.printStackTrace();
+            return null;
+        } catch (TransformerException te) {
+            te.printStackTrace();
+            return null;
+        } finally {
+            System.clearProperty("javax.xml.transform.TransformerFactory");
+        }
+        return result.getNode();
+    }
+    
 
     public static String doTransform(Document originalXml, Node transform) {
 
