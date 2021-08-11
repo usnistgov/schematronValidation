@@ -50,4 +50,22 @@
         </dependency>
         -->
     </dependencies>
+    
+    <distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>https://hit-dev.nist.gov:9001/repository/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Internal Snapshots</name>
+			<url>https://hit-dev.nist.gov:9001/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<scm>
+		<connection>scm:git:https://github.com/usnistgov/schematronValidation.git</connection>
+		<url>scm:git:https://github.com/usnistgov/schematronValidation.git</url>
+		<developerConnection>scm:git:https://github.com/usnistgov/schematronValidation.git</developerConnection>
+  </scm>
 </project>
