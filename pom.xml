@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.nist.healthcare</groupId>
     <artifactId>schematronValidation</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,6 +57,6 @@
 		<connection>scm:git:https://github.com/usnistgov/schematronValidation.git</connection>
 		<url>scm:git:https://github.com/usnistgov/schematronValidation.git</url>
 		<developerConnection>scm:git:https://github.com/usnistgov/schematronValidation.git</developerConnection>
-    <tag>schematronValidation-1.0</tag>
+    <tag>HEAD</tag>
   </scm>
 </project>
