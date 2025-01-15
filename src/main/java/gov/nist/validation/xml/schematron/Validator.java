@@ -45,7 +45,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import gov.nist.validation.xml.schematron.Result.Severity;
-import net.sf.saxon.FeatureKeys;
+import net.sf.saxon.lib.FeatureKeys;
 
 /**
  * @author andrew.mccaffrey
